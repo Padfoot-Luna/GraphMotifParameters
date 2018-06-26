@@ -1,6 +1,6 @@
 # Goal
 
-The purpose of this project is to implement the algorithms for counting subgrpahs using framework Graph Motif Parameters, and test if our algorithms are more efficient in time.
+The purpose of this project is to implement the algorithms for counting subgraphs using framework Graph Motif Parameters, and test if our algorithms are more efficient in time.
 
 # Implementations
 
