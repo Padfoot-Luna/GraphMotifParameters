@@ -5,6 +5,7 @@ from itertools import combinations
 from homsearch_master.sub_iso import VF2
 from utilities.load_data import nx_to_grf
 
+### cmd
 # sub_iso/vf3 sub_iso/vflib3/test/bvg1.sub.grf sub_iso/vflib3/test/bvg1.grf
 # sub_iso/vf3 dataset/vf3/h.grf dataset/vf3/g.grf
 
@@ -18,8 +19,8 @@ def count_subgraph_isomorphisms(H, G, filename=None):
             os.mkdir(path)
     filename_h = os.path.join(path, 'h.grf')
     filename_g = os.path.join(path, 'g.grf')
-    nx_to_grf(H, filename_h, list(nx.nodes(H))[0])
-    nx_to_grf(G, filename_g, list(nx.nodes(G))[0])
+    nx_to_grf(H, filename_h)
+    nx_to_grf(G, filename_g)
 
     cmd = "sub_iso/vf3 {} {}"  ### induced subgraph isomorphisms
     try:
@@ -39,10 +40,10 @@ def count_induced_subgraphs(H, G, filename=None):
             os.mkdir(path)
     filename_h = os.path.join(path, 'h.grf')
     filename_g = os.path.join(path, 'g.grf')
-    nx_to_grf(H, filename_h, list(nx.nodes(H))[0])
-    nx_to_grf(G, filename_g, list(nx.nodes(G))[0])
+    nx_to_grf(H, filename_h)
+    nx_to_grf(G, filename_g)
 
-    cmd = "sub_iso/vf3 {} {}"  ### induced subgraph isomorphisms
+    cmd = "sub_iso/vf3 {} {}"
     try:
         out_1 = subprocess.check_output(cmd.format(filename_h, filename_g), shell=True, stderr=subprocess.STDOUT)
         out_2 = subprocess.check_output(cmd.format(filename_h, filename_h), shell=True, stderr=subprocess.STDOUT)

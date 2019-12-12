@@ -46,15 +46,18 @@ The format of the file containing the graph is the following:
 “id_starting_node 1” “id_ending_node” “label edge”*
 “id_starting_node 1” “id_ending_node” “label edge”*
 """
-def nx_to_grf(G, filename, i=0):
+def nx_to_grf(G, filename):
     """node index starts from i"""
     with open(filename, 'w') as f:
         f.write(str(nx.number_of_nodes(G)))
         f.write('\n')
-        for v in nx.nodes(G):
+        nodes = list(nx.nodes(G))
+        list.sort(nodes)
+        i = nodes[0]
+        for v in nodes:
             f.write('%d %d' % (v - i, 1))
             f.write('\n')
-        for v in nx.nodes(G):
+        for v in nodes:
             f.write(str(nx.degree(G, nbunch=v)))
             f.write('\n')
             for u in nx.neighbors(G, v):

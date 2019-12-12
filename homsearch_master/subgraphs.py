@@ -86,25 +86,6 @@ def GMP_multiprocess(H_list, G, checking=True, n_jobs=4):
 
 
 ##################### homlib + GMP ######################
-def graph_trans(G):
-    G_ = Graph(nx.number_of_nodes(G))
-    for e in G.edges:
-        G_.addEdge(e[0], e[1])
-    return G_
-
-
-def sub_GMP_homlib(F, G):
-    partition_dict = partition(F)
-    graph_list = list(partition_dict.values())
-    mul_list = multiplier_list(partition_dict)
-    G_ = graph_trans(G)
-    hom_list = []
-    for g in graph_list:
-        hom_list.append(hom(graph_trans(g), G_))
-        #TODO: divide g and G_ into connected components
-    num_sub = int(np.dot(np.array(mul_list), np.array(hom_list)) / VF2.count_isomorphisms_nx(F, F))
-
-    return num_sub
 
 
 ##################### VF2 ######################
@@ -119,13 +100,31 @@ def VF_2(H_list, G):
     return result, t
 
 
-@func_set_timeout(600)
+@func_set_timeout(1800)
 def VF_2_multiprocess(H_list, G, n_jobs=4):
     start = time.time()
     pool = Pool(processes=n_jobs)
     p = [0] * len(H_list)
     for i, h in enumerate(H_list):
         p[i] = pool.apply_async(VF2.count_subgraphs_nx, args=(h, G))
+    pool.close()
+    pool.join()
+    t = time.time() - start
+
+    result = []
+    for i in range(len(H_list)):
+        result.append(p[i].get())
+    print('Running time: %.2f seconds' % t)
+    return result, t
+
+
+@func_set_timeout(1800)
+def VF_2_multiprocess_gt(H_list, G, n_jobs=4):
+    start = time.time()
+    pool = Pool(processes=n_jobs)
+    p = [0] * len(H_list)
+    for i, h in enumerate(H_list):
+        p[i] = pool.apply_async(VF2.count_subgraphs_gt, args=(h, G))
     pool.close()
     pool.join()
     t = time.time() - start
